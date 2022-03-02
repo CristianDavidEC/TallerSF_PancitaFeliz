@@ -9,6 +9,7 @@ public class Menu {
     public static void menuInicial() {
         GestorTienda gestorTienda = new GestorTienda();
         gestorTienda.cargarProductos("D:\\Documents\\MATERIALES\\Material Virtual\\2022-1\\Software 1\\Taller 1 Poo\\ProductosPancitaFeliz.txt");
+        gestorTienda.cargarTiendas("D:\\Documents\\MATERIALES\\Material Virtual\\2022-1\\Software 1\\Taller 1 Poo\\TiendasClientesPancitaFeliz.txt");
 
         //TODO: Inicializacion del objeto gestor tienda
         Scanner sc = new Scanner(System.in);

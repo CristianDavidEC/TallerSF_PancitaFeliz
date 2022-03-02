@@ -5,10 +5,9 @@ public class TiendaCliente {
     private String nombreTienda;
     private Orden orden;
 
-    public TiendaCliente(String codigoTienda, String nombreTienda, Orden orden) {
+    public TiendaCliente(String codigoTienda, String nombreTienda) {
         this.codigoTienda = codigoTienda;
         this.nombreTienda = nombreTienda;
-        this.orden = orden;
     }
 
     //-------------Sets & Gets--------------
