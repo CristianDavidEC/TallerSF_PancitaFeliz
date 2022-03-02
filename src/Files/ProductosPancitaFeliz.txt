@@ -1,0 +1,12 @@
+100,pan tajado grande,3500
+110,pan tajado pequeño,2800
+210,croissant paquete de 5,800
+220,croissant unidad,180
+300,galletas saladas,2800
+400,galletas dulces paquete de 10,1000
+410,galletas dulces paquete de 5,550
+420,galleta dulce unidad,120
+500,ponque entero,3000
+600,cup cake paquete de 10,1400
+610,cup cake paquete de 5,700
+620,cup cake unidad,150
