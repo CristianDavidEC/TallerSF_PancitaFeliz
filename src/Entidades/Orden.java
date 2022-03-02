@@ -6,18 +6,19 @@ import java.util.Date;
 public class Orden {
     private String codigoVededor;
     private String NombreVendedor;
-    private Date fechaVenta;
+    private String fechaVenta;
     private double valorTotal;
     private ArrayList<Pedido> pedidos;
 
-    public Orden(String codigoVededor, String nombreVendedor, Date fechaVenta, double valorTotal, ArrayList<Pedido> pedidos) {
+    public Orden(String codigoVededor, String nombreVendedor, String fechaVenta) {
         this.codigoVededor = codigoVededor;
         NombreVendedor = nombreVendedor;
         this.fechaVenta = fechaVenta;
-        this.valorTotal = valorTotal;
-        this.pedidos = pedidos;
     }
 
+    public void cargarPedidos (String pathArchivo) {
+
+    }
     //-------------Sets & Gets--------------
     public String getCodigoVededor() {
         return codigoVededor;
@@ -35,11 +36,11 @@ public class Orden {
         NombreVendedor = nombreVendedor;
     }
 
-    public Date getFechaVenta() {
+    public String getFechaVenta() {
         return fechaVenta;
     }
 
-    public void setFechaVenta(Date fechaVenta) {
+    public void setFechaVenta(String fechaVenta) {
         this.fechaVenta = fechaVenta;
     }
 
