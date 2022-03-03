@@ -5,6 +5,8 @@ import Entidades.Producto;
 import Entidades.TiendaCliente;
 
 import javax.swing.*;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Scanner;
 /**
@@ -99,17 +101,28 @@ public class Menu {
     }
 
     public static String VentanaArchivo () {
-        String ruta = "";
+        Scanner entrada = null;
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.showOpenDialog(fileChooser);
         try {
-            ruta = fileChooser.getSelectedFile().getAbsolutePath();
+            String ruta = fileChooser.getSelectedFile().getAbsolutePath();
+            File f = new File(ruta);
+            entrada = new Scanner(f);
+            while (entrada.hasNext()) {
+                System.out.println(entrada.nextLine());
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
         } catch (NullPointerException e) {
             System.out.println("No se ha seleccionado ningún fichero");
         } catch (Exception e) {
             System.out.println(e.getMessage());
+        } finally {
+            if (entrada != null) {
+                entrada.close();
+            }
         }
-        return ruta;
+        return "";
     }
 
 }
