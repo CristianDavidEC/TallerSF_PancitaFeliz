@@ -100,6 +100,10 @@ public class Menu {
 
     }
 
+    /**
+     * Creacion ventana para seleccionar manualmente un archivo de pedido
+     * */
+
     public static String VentanaArchivo () {
         Scanner entrada = null;
         JFileChooser fileChooser = new JFileChooser();
@@ -121,6 +125,7 @@ public class Menu {
             if (entrada != null) {
                 entrada.close();
             }
+
         }
         return "";
     }
