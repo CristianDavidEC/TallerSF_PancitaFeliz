@@ -4,6 +4,9 @@ import Entidades.Orden;
 import Entidades.Producto;
 import Entidades.TiendaCliente;
 
+import javax.swing.*;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Scanner;
 import jdk.swing.interop.SwingInterOpUtils;
@@ -95,15 +98,37 @@ public class Menu {
         String fechaVenta = sc.next();
 
         Orden orden = new Orden(codigoVendedor, nombreVendedor, fechaVenta);
-        elegirArchivo();
+        //elegirArchivo();
+        String ruta = VentanaArchivo();
+        System.out.println(ruta);
     }
 
-    public static String elegirArchivo () {
+    /**
+     * Creacion ventana para seleccionar manualmente un archivo de pedido
+     * */
+    public static String VentanaArchivo () {
+        Scanner entrada = null;
         JFileChooser fileChooser = new JFileChooser();
-        fileChooser.showOpenDialog(null);
-        String ruta = fileChooser.getSelectedFile().getAbsolutePath();
-        System.out.println(ruta);
-        return ruta;
+        fileChooser.showOpenDialog(fileChooser);
+        try {
+            String ruta = fileChooser.getSelectedFile().getAbsolutePath();
+            File f = new File(ruta);
+            entrada = new Scanner(f);
+            while (entrada.hasNext()) {
+                System.out.println(entrada.nextLine());
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (NullPointerException e) {
+            System.out.println("No se ha seleccionado ningún fichero");
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        } finally {
+            if (entrada != null) {
+                entrada.close();
+            }
+        }
+        return "";
     }
 }
 
