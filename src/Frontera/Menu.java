@@ -4,9 +4,10 @@ import Entidades.Orden;
 import Entidades.Producto;
 import Entidades.TiendaCliente;
 
-import javax.swing.*;
 import java.util.ArrayList;
 import java.util.Scanner;
+import jdk.swing.interop.SwingInterOpUtils;
+import javax.swing.*;
 /**
  * Clase que se encarga de todos los dialogos e informacion que va a usar el usuario
  */
@@ -18,6 +19,7 @@ public class Menu {
 
     /**
      * Cuando se crea el objeto Menu en en main se carga la informacion de la tienda
+     *
      * @param gestorTienda
      */
     public Menu(GestorTienda gestorTienda) {
@@ -51,34 +53,34 @@ public class Menu {
         } while (opcion != 0);
     }
 
-    public static void mostrarProductos (ArrayList<Producto> productos) {
-        for (Producto p: productos) {
-            System.out.println(p.getCodigoProducto() +" - "+ p.getNombreProducto() +" - "+ p.getValorUnitario());
+    public static void mostrarProductos(ArrayList<Producto> productos) {
+        for (Producto p : productos) {
+            System.out.println(p.getCodigoProducto() + " - " + p.getNombreProducto() + " - " + p.getValorUnitario());
         }
     }
 
-    public static void mostrarTiendas(ArrayList<TiendaCliente> tiendas){
+    public static void mostrarTiendas(ArrayList<TiendaCliente> tiendas) {
         System.out.println("Seleccione una tienda para registrar una orden:");
         System.out.println("Lista de Tiendas vinculadas");
         int opcion;
         do {
             int valor = 1;
-            for (TiendaCliente t: tiendas) {
-                System.out.println(valor+")"+t.getCodigoTienda() +" - "+ t.getNombreTienda());
+            for (TiendaCliente t : tiendas) {
+                System.out.println(valor + ")" + t.getCodigoTienda() + " - " + t.getNombreTienda());
                 valor++;
             }
             Scanner sc = new Scanner(System.in);
             opcion = sc.nextInt();
-            if(opcion <= tiendas.size()){
+            if (opcion <= tiendas.size()) {
                 crearOrden(tiendas.get(opcion - 1));
                 opcion = 0;
             }
         } while (opcion != 0);
     }
 
-    public static void crearOrden (TiendaCliente tienda) {
+    public static void crearOrden(TiendaCliente tienda) {
         System.out.println("REGISTRO ORDEN PARA LA TIENDA: \n" +
-                tienda.getCodigoTienda()+" "+ tienda.getNombreTienda());
+                tienda.getCodigoTienda() + " " + tienda.getNombreTienda());
 
         Scanner sc = new Scanner(System.in);
         System.out.println("Ingrese los valores Solicitados");
@@ -92,26 +94,17 @@ public class Menu {
         System.out.print("Fecha de la Venta: ");
         String fechaVenta = sc.next();
 
-        Orden orden = new Orden(codigoVendedor,nombreVendedor, fechaVenta);
-        String ruta = VentanaArchivo();
-        System.out.println(ruta);
-
+        Orden orden = new Orden(codigoVendedor, nombreVendedor, fechaVenta);
+        elegirArchivo();
     }
 
-    public static String VentanaArchivo () {
-        String ruta = "";
+    public static String elegirArchivo () {
         JFileChooser fileChooser = new JFileChooser();
-        fileChooser.showOpenDialog(fileChooser);
-        try {
-            ruta = fileChooser.getSelectedFile().getAbsolutePath();
-        } catch (NullPointerException e) {
-            System.out.println("No se ha seleccionado ningún fichero");
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
+        fileChooser.showOpenDialog(null);
+        String ruta = fileChooser.getSelectedFile().getAbsolutePath();
+        System.out.println(ruta);
         return ruta;
     }
-
 }
 
 
