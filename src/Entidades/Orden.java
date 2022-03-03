@@ -10,7 +10,6 @@ public class Orden {
     private String codigoVededor;
     private String NombreVendedor;
     private String fechaVenta;
-    private double valorTotal;
     private ArrayList<Pedido> pedidos;
 
     public Orden(String codigoVededor, String nombreVendedor, String fechaVenta) {
@@ -28,17 +27,23 @@ public class Orden {
      */
     public void cargarPedidos (String pathArchivo, GestorTienda gestorTienda)
     throws ProductoException{
-        ArrayList<String[]> datos = Archivo.leerArchivo(pathArchivo);
+        Archivo archivo = new Archivo();
+        ArrayList<String[]> datos = archivo.leerArchivo(pathArchivo);
         for (String[] dato: datos) {
             int cantidad = Integer.parseInt(dato[1]);
             Producto prod = gestorTienda.buscarProducto(dato[0]);
             if (prod == null) {
                 throw new ProductoException("El producto con id "+dato[0]+ " NO es valido, porfavor verifique el archivo.");
             }
-            Pedido pedido = new Pedido(cantidad, prod);
+            Pedido pedido = new Pedido(cantidad, prod, calcularValor(cantidad, prod.getValorUnitario()));
             this.pedidos.add(pedido);
         }
     }
+
+    public double calcularValor (int cantidad, double valorUnitario) {
+        return cantidad * valorUnitario;
+    }
+
     //-------------Sets & Gets--------------
     public String getCodigoVededor() {
         return codigoVededor;
@@ -62,14 +67,6 @@ public class Orden {
 
     public void setFechaVenta (String fechaVenta) {
         this.fechaVenta = fechaVenta;
-    }
-
-    public double getValorTotal () {
-        return valorTotal;
-    }
-
-    public void setValorTotal (double valorTotal) {
-        this.valorTotal = valorTotal;
     }
 
     public ArrayList<Pedido> getPedidos() {

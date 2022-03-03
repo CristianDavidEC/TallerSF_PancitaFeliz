@@ -25,8 +25,6 @@ public class Menu {
      */
     public Menu(GestorTienda gestorTienda) {
         this.gestorTienda = gestorTienda;
-        gestorTienda.cargarProductos();
-        gestorTienda.cargarTiendas();
     }
 
     public void menuInicial() {
@@ -93,8 +91,8 @@ public class Menu {
         String nombreVendedor = sc.nextLine();
 
         System.out.print("Fecha de la Venta: ");
-        System.out.println(" ");
         String fechaVenta = sc.next();
+        System.out.println(" ");
 
         Orden orden = new Orden(codigoVendedor, nombreVendedor, fechaVenta);
         String ruta = VentanaArchivo();
@@ -122,12 +120,14 @@ public class Menu {
             System.out.println("Codigo Producto: "+ p.getProducto().getCodigoProducto() +"\n"
                                 +"Nombre Producto: "+ p.getProducto().getNombreProducto() +"\n"
                                 +"Valor Unitario: "+ p.getProducto().getValorUnitario() +"\n"
-                                +"Cantidad Solicitada: "+ p.getCantidadPedida());
+                                +"Cantidad Solicitada: "+ p.getCantidadPedida() +"\n"
+                                +"Valor Total: "+ p.getValorTotal());
         }
     }
 
     /**
-     * Creacion ventana para seleccionar manualmente un archivo de pedido
+     * Ventana para seleccionar el archivo a usar
+     * Nota: en ocaciones la ventana sale por detar de todas las que estan abiertas en el pc
      * */
     public static String VentanaArchivo () {
         String ruta;

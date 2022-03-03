@@ -14,7 +14,7 @@ public class Archivo {
      * @param direccion
      * @return ArrayList<String[]>
      */
-    public static ArrayList<String[]> leerArchivo (String direccion){
+    public ArrayList<String[]> leerArchivo (String direccion){
         ArrayList<String[]> datos = new ArrayList<String[]>();
         String[] valores ={};
         File doc = new File(direccion);
