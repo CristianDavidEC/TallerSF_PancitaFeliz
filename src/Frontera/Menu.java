@@ -1,8 +1,6 @@
 package Frontera;
 import Contolador.GestorTienda;
-import Entidades.Orden;
-import Entidades.Producto;
-import Entidades.TiendaCliente;
+import Entidades.*;
 
 import javax.swing.*;
 import java.io.File;
@@ -56,13 +54,13 @@ public class Menu {
         } while (opcion != 0);
     }
 
-    public static void mostrarProductos(ArrayList<Producto> productos) {
+    public void mostrarProductos(ArrayList<Producto> productos) {
         for (Producto p : productos) {
             System.out.println(p.getCodigoProducto() + " - " + p.getNombreProducto() + " - " + p.getValorUnitario());
         }
     }
 
-    public static void mostrarTiendas(ArrayList<TiendaCliente> tiendas) {
+    public void mostrarTiendas(ArrayList<TiendaCliente> tiendas) {
         System.out.println("Seleccione una tienda para registrar una orden:");
         System.out.println("Lista de Tiendas vinculadas");
         int opcion;
@@ -81,7 +79,7 @@ public class Menu {
         } while (opcion != 0);
     }
 
-    public static void crearOrden(TiendaCliente tienda) {
+    public void crearOrden(TiendaCliente tienda) {
         System.out.println("REGISTRO ORDEN PARA LA TIENDA: \n" +
                 tienda.getCodigoTienda() + " " + tienda.getNombreTienda());
 
@@ -95,30 +93,49 @@ public class Menu {
         String nombreVendedor = sc.nextLine();
 
         System.out.print("Fecha de la Venta: ");
+        System.out.println(" ");
         String fechaVenta = sc.next();
 
         Orden orden = new Orden(codigoVendedor, nombreVendedor, fechaVenta);
-        //elegirArchivo();
         String ruta = VentanaArchivo();
-        System.out.println(ruta);
+        try {
+            orden.cargarPedidos(ruta, getGestorTienda());
+            tienda.setOrden(orden);
+            mostrarOrdenDeTienda(tienda);
+        } catch (ProductoException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public void mostrarOrdenDeTienda (TiendaCliente tienda) {
+        System.out.println("!! ORDEN DE LA TIENDA ¡¡");
+        System.out.println("------------------------------------");
+        System.out.println("Codigo de la tienda: " + tienda.getCodigoTienda() +"\n"
+                    +"Nombre de la tienda: "+ tienda.getNombreTienda() +"\n"
+                    +"Codigo Vendedor:"+ tienda.getOrden().getCodigoVededor() +"\n"
+                    +"Nombre Vendedor:"+ tienda.getOrden().getNombreVendedor() +"\n"
+                    +"Fecha:"+ tienda.getOrden().getFechaVenta() +"\n");
+        System.out.println("Lista de Productos Solicitados");
+
+        for (Pedido p: tienda.getOrden().getPedidos()) {
+            System.out.println("------------------------------------------");
+            System.out.println("Codigo Producto: "+ p.getProducto().getCodigoProducto() +"\n"
+                                +"Nombre Producto: "+ p.getProducto().getNombreProducto() +"\n"
+                                +"Valor Unitario: "+ p.getProducto().getValorUnitario() +"\n"
+                                +"Cantidad Solicitada: "+ p.getCantidadPedida());
+        }
     }
 
     /**
      * Creacion ventana para seleccionar manualmente un archivo de pedido
      * */
     public static String VentanaArchivo () {
+        String ruta;
         Scanner entrada = null;
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.showOpenDialog(fileChooser);
         try {
-            String ruta = fileChooser.getSelectedFile().getAbsolutePath();
-            File f = new File(ruta);
-            entrada = new Scanner(f);
-            while (entrada.hasNext()) {
-                System.out.println(entrada.nextLine());
-            }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            return ruta = fileChooser.getSelectedFile().getAbsolutePath();
         } catch (NullPointerException e) {
             System.out.println("No se ha seleccionado ningún fichero");
         } catch (Exception e) {
@@ -128,7 +145,11 @@ public class Menu {
                 entrada.close();
             }
         }
-        return "";
+        return null;
+    }
+
+    public GestorTienda getGestorTienda() {
+        return gestorTienda;
     }
 }
 

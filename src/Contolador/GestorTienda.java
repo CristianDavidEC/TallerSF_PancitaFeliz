@@ -1,8 +1,7 @@
 package Contolador;
-
 import Entidades.Producto;
-import Entidades.TiendaCliente;
 
+import Entidades.TiendaCliente;
 import java.util.ArrayList;
 
 public class GestorTienda {
@@ -19,6 +18,9 @@ public class GestorTienda {
         this.tiendas = new ArrayList<TiendaCliente>();
     }
 
+    /**
+     * Carga el archivo de productos y los crea
+     */
     public void cargarProductos () {
         ArrayList<String[]> datos = Archivo.leerArchivo(this.pathProductos);
         for (String[] dato: datos) {
@@ -27,6 +29,9 @@ public class GestorTienda {
         }
     }
 
+    /**
+     * Carga del archivo de las tienda y crea las entidades de esta
+     */
     public void cargarTiendas () {
         ArrayList<String[]> datos = Archivo.leerArchivo(this.pathTiendas);
         for (String[] dato: datos) {
@@ -35,6 +40,11 @@ public class GestorTienda {
         }
     }
 
+    /**
+     * Busca un producto por codigo del mismo, sino o ncuntra retorna null
+     * @param codigoProducto
+     * @return
+     */
     public Producto buscarProducto (String codigoProducto) {
         for (Producto p : this.productos ) {
             if(p.getCodigoProducto().equals(codigoProducto)){
@@ -48,6 +58,7 @@ public class GestorTienda {
     public ArrayList<Producto> getProductos() {
         return productos;
     }
+
     public ArrayList<TiendaCliente> getTiendas() {
         return tiendas;
     }
