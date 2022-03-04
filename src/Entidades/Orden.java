@@ -37,13 +37,17 @@ public class Orden {
             if (prod == null) {
                 throw new ProductoException("El producto con id "+dato[0]+ " NO es valido, porfavor verifique el archivo.");
             }
-            Pedido pedido = new Pedido(cantidad, prod, calcularValor(cantidad, prod.getValorUnitario()));
+            Pedido pedido = new Pedido(cantidad, prod, calcularValor());
             this.pedidos.add(pedido);
         }
     }
 
-    public double calcularValor (int cantidad, double valorUnitario) {
-        return cantidad * valorUnitario;
+    public double calcularValor () {
+        double total = 0;
+        for (Pedido p: getPedidos()){
+            total += p.getValorTotal();
+        }
+        return total;
     }
 
     //-------------Sets & Gets--------------

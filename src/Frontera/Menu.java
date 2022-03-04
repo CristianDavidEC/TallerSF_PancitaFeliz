@@ -138,9 +138,9 @@ public class Menu {
                                 +"Nombre Producto: "+ p.getProducto().getNombreProducto() +"\n"
                                 +"Valor Unitario: "+ p.getProducto().getValorUnitario() +"\n"
                                 +"Cantidad Solicitada: "+ p.getCantidadPedida());
-            System.out.println("------------------------------------------");
-            System.out.println("Valor total: "+p.getValorTotal());
         }
+        System.out.println("------------------------------------------ \n");
+        System.out.println("Valor total del pedido: "+tienda.getOrden().calcularValor());
     }
     public void ordenarProductos (List<Producto> productos) {
         Comparator<Producto> comparador = Comparator.comparing(Producto::getNombreProducto);
