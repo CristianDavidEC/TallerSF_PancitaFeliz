@@ -34,7 +34,9 @@ public class Menu {
             System.out.println("\n ¡¡BIENVENIDO A PANCITA FELIZ!! \n");
             System.out.println("1.Ver Productos");
             System.out.println("2.Ver Tiendas");
-            System.out.println("Elija Una Opcion");
+            System.out.println("3.Crear Orden para Una Tienda");
+            System.out.println("4.Ver Orden De Una Tienda");
+            System.out.print("Elija Una Opcion: ");
             opcion = sc.nextInt();
 
             switch (opcion) {
@@ -42,7 +44,13 @@ public class Menu {
                     mostrarProductos(gestorTienda.getProductos());
                     break;
                 case 2:
-                    mostrarTiendas(gestorTienda.getTiendas());
+                    verTiendas(gestorTienda.getTiendas());
+                    break;
+                case 3:
+                    elegirTienda(gestorTienda.getTiendas());
+                    break;
+                case 4:
+                    //TODO:Ver la orden ya creada de una tienda
                     break;
                 case 0:
                     break;
@@ -58,19 +66,24 @@ public class Menu {
         }
     }
 
-    public void mostrarTiendas(ArrayList<TiendaCliente> tiendas) {
-        System.out.println("Seleccione una tienda para registrar una orden:");
-        System.out.println("Lista de Tiendas vinculadas");
+    public void  verTiendas (ArrayList<TiendaCliente> tiendas) {
+        System.out.println("\n Lista de Tiendas vinculadas");
+        System.out.println("--------------------------------");
+        int valor = 1;
+        for (TiendaCliente t : tiendas) {
+            System.out.println(valor + ")" + t.getCodigoTienda() + " - " + t.getNombreTienda());
+            valor++;
+        }
+    }
+
+    public void elegirTienda(ArrayList<TiendaCliente> tiendas) {
         int opcion;
         do {
-            int valor = 1;
-            for (TiendaCliente t : tiendas) {
-                System.out.println(valor + ")" + t.getCodigoTienda() + " - " + t.getNombreTienda());
-                valor++;
-            }
+            verTiendas(tiendas);
+            System.out.print("Seleccione una tienda para registrar una orden: ");
             Scanner sc = new Scanner(System.in);
             opcion = sc.nextInt();
-            if (opcion <= tiendas.size()) {
+            if (opcion <= tiendas.size()&& opcion > 0) {
                 crearOrden(tiendas.get(opcion - 1));
                 opcion = 0;
             }
@@ -124,7 +137,6 @@ public class Menu {
                                 +"Valor Total: "+ p.getValorTotal());
         }
     }
-
     /**
      * Ventana para seleccionar el archivo a usar
      * Nota: en ocaciones la ventana sale por detar de todas las que estan abiertas en el pc
