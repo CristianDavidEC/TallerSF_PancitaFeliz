@@ -3,12 +3,11 @@ import Contolador.GestorTienda;
 import Entidades.*;
 
 import javax.swing.*;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.Scanner;
-import jdk.swing.interop.SwingInterOpUtils;
-import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
+
 /**
  * Clase que se encarga de todos los dialogos e informacion que va a usar el usuario
  */
@@ -61,7 +60,9 @@ public class Menu {
     }
 
     public void mostrarProductos(ArrayList<Producto> productos) {
-        for (Producto p : productos) {
+        Comparator<Producto> comparador = Comparator.comparing(Producto::getNombreProducto);
+        List<Producto>lista= productos.stream().sorted(comparador).toList();
+        for (Producto p : lista) {
             System.out.println(p.getCodigoProducto() + " - " + p.getNombreProducto() + " - " + p.getValorUnitario());
         }
     }
@@ -104,7 +105,8 @@ public class Menu {
         String nombreVendedor = sc.nextLine();
 
         System.out.print("Fecha de la Venta: ");
-        String fechaVenta = sc.next();
+        DateTimeFormatter fechaVenta = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm");
+        System.out.println(fechaVenta.format(LocalDateTime.now()));
         System.out.println(" ");
 
         Orden orden = new Orden(codigoVendedor, nombreVendedor, fechaVenta);
@@ -128,34 +130,43 @@ public class Menu {
                     +"Fecha:"+ tienda.getOrden().getFechaVenta() +"\n");
         System.out.println("Lista de Productos Solicitados");
 
+        //ordenarProductos(gestorTienda.getProductos());
+
         for (Pedido p: tienda.getOrden().getPedidos()) {
             System.out.println("------------------------------------------");
             System.out.println("Codigo Producto: "+ p.getProducto().getCodigoProducto() +"\n"
                                 +"Nombre Producto: "+ p.getProducto().getNombreProducto() +"\n"
                                 +"Valor Unitario: "+ p.getProducto().getValorUnitario() +"\n"
-                                +"Cantidad Solicitada: "+ p.getCantidadPedida() +"\n"
-                                +"Valor Total: "+ p.getValorTotal());
+                                +"Cantidad Solicitada: "+ p.getCantidadPedida());
+            System.out.println("------------------------------------------");
+            System.out.println("Valor total: "+p.getValorTotal());
+        }
+    }
+    public void ordenarProductos (List<Producto> productos) {
+        Comparator<Producto> comparador = Comparator.comparing(Producto::getNombreProducto);
+        List<Producto>lista= productos.stream().sorted(comparador).toList();
+        for (Producto p: lista){
+            System.out.println(p.getNombreProducto());
+            System.out.println(p.getCodigoProducto());
         }
     }
     /**
-     * Ventana para seleccionar el archivo a usar
-     * Nota: en ocaciones la ventana sale por detar de todas las que estan abiertas en el pc
+     * Creacion ventana para seleccionar manualmente un archivo de pedido
      * */
     public static String VentanaArchivo () {
         String ruta;
         Scanner entrada = null;
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.showOpenDialog(fileChooser);
+        //Creamos el filtro
+        FileNameExtensionFilter filtro = new FileNameExtensionFilter("*.TXT", "txt");
+        fileChooser.setFileFilter(filtro);
         try {
             return ruta = fileChooser.getSelectedFile().getAbsolutePath();
         } catch (NullPointerException e) {
             System.out.println("No se ha seleccionado ningún fichero");
         } catch (Exception e) {
             System.out.println(e.getMessage());
-        } finally {
-            if (entrada != null) {
-                entrada.close();
-            }
         }
         return null;
     }
