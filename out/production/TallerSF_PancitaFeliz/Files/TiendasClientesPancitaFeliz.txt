@@ -1,2 +1,4 @@
 T-01,Tienda de Josefa
 T-02,Tienda de Don Pepe
+T-03,Tienda de Mana del Rey
+T-04,Tienda de SuPan

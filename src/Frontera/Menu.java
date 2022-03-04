@@ -17,15 +17,13 @@ public class Menu {
      */
     GestorTienda gestorTienda;
 
-    /**
-     * Cuando se crea el objeto Menu en en main se carga la informacion de la tienda
-     *
-     * @param gestorTienda
-     */
     public Menu(GestorTienda gestorTienda) {
         this.gestorTienda = gestorTienda;
     }
 
+    /**
+     * Menu Principal del programa, con las opciones para el usurio
+     */
     public void menuInicial() {
         Scanner sc = new Scanner(System.in);
         int opcion;
@@ -34,7 +32,6 @@ public class Menu {
             System.out.println("1.Ver Productos");
             System.out.println("2.Ver Tiendas");
             System.out.println("3.Crear Orden para Una Tienda");
-            System.out.println("4.Ver Orden De Una Tienda");
             System.out.print("Elija Una Opcion: ");
             opcion = sc.nextInt();
 
@@ -59,14 +56,24 @@ public class Menu {
         } while (opcion != 0);
     }
 
+    /**
+     * Lista los productos disponibles en la tienda
+     * @param productos
+     */
     public void mostrarProductos(ArrayList<Producto> productos) {
         Comparator<Producto> comparador = Comparator.comparing(Producto::getNombreProducto);
         List<Producto>lista= productos.stream().sorted(comparador).toList();
+        System.out.println("\n Nuestra Lista de Productos:");
+        System.out.println("-----------------------------------");
         for (Producto p : lista) {
             System.out.println(p.getCodigoProducto() + " - " + p.getNombreProducto() + " - " + p.getValorUnitario());
         }
     }
 
+    /**
+     * Lista las tiendas vinculadas a pancita feliz
+     * @param tiendas
+     */
     public void  verTiendas (ArrayList<TiendaCliente> tiendas) {
         System.out.println("\n Lista de Tiendas vinculadas");
         System.out.println("--------------------------------");
@@ -77,6 +84,10 @@ public class Menu {
         }
     }
 
+    /**
+     * permite selecionar la tienda que va a crear una orden
+     * @param tiendas
+     */
     public void elegirTienda(ArrayList<TiendaCliente> tiendas) {
         int opcion;
         do {
@@ -91,6 +102,10 @@ public class Menu {
         } while (opcion != 0);
     }
 
+    /**
+     * Solicita los datos para crear la orden, ademas de cargar el archivo del pedido
+     * @param tienda
+     */
     public void crearOrden(TiendaCliente tienda) {
         System.out.println("REGISTRO ORDEN PARA LA TIENDA: \n" +
                 tienda.getCodigoTienda() + " " + tienda.getNombreTienda());
@@ -120,6 +135,10 @@ public class Menu {
         }
     }
 
+    /**
+     * Muestra la orden creada
+     * @param tienda
+     */
     public void mostrarOrdenDeTienda (TiendaCliente tienda) {
         System.out.println("!! ORDEN DE LA TIENDA ¡¡");
         System.out.println("------------------------------------");
@@ -137,11 +156,31 @@ public class Menu {
             System.out.println("Codigo Producto: "+ p.getProducto().getCodigoProducto() +"\n"
                                 +"Nombre Producto: "+ p.getProducto().getNombreProducto() +"\n"
                                 +"Valor Unitario: "+ p.getProducto().getValorUnitario() +"\n"
-                                +"Cantidad Solicitada: "+ p.getCantidadPedida());
+                                +"Cantidad Solicitada: "+ p.getCantidadPedida()+"\n"
+                                +"Total Pedido: "+ p.getValorTotal());
+
         }
         System.out.println("------------------------------------------ \n");
-        System.out.println("Valor total del pedido: "+tienda.getOrden().calcularValor());
+        System.out.println("Valor total a pagar: "+tienda.getOrden().getTotalOrden());
+        confirmarOrden(tienda);
     }
+
+    public void confirmarOrden (TiendaCliente tienda) {
+        Scanner sc = new Scanner(System.in);
+        String opcion;
+        System.out.println("Esta deacuerdo con su orden");
+        System.out.println("1) si");
+        System.out.println("2) no");
+        opcion = sc.nextLine();
+
+        if (opcion.equals("si")){
+            System.out.println("Su Orden se a Confirmado");
+        }else{
+            tienda.setOrden(null);
+            System.out.println("Orden Rechazada");
+        }
+    }
+
     public void ordenarProductos (List<Producto> productos) {
         Comparator<Producto> comparador = Comparator.comparing(Producto::getNombreProducto);
         List<Producto>lista= productos.stream().sorted(comparador).toList();
@@ -150,14 +189,16 @@ public class Menu {
             System.out.println(p.getCodigoProducto());
         }
     }
+
     /**
      * Creacion ventana para seleccionar manualmente un archivo de pedido
      * */
     public static String VentanaArchivo () {
         String ruta;
         Scanner entrada = null;
-        JFileChooser fileChooser = new JFileChooser();
+        JFileChooser fileChooser = new JFileChooser("src/files");
         fileChooser.showOpenDialog(fileChooser);
+        fileChooser.setVisible(true);
         //Creamos el filtro
         FileNameExtensionFilter filtro = new FileNameExtensionFilter("*.TXT", "txt");
         fileChooser.setFileFilter(filtro);
@@ -166,7 +207,7 @@ public class Menu {
         } catch (NullPointerException e) {
             System.out.println("No se ha seleccionado ningún fichero");
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            System.out.println("Error al selecionar el archivo");
         }
         return null;
     }
