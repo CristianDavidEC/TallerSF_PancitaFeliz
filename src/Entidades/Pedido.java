@@ -14,6 +14,8 @@ public class Pedido {
     //-------------Sets & Gets--------------
 
     public double getValorTotal() {
+        double valorTotal =0;
+        valorTotal += producto.getValorUnitario() * cantidadPedida;
         return valorTotal;
     }
 

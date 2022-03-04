@@ -3,16 +3,17 @@ package Entidades;
 import Contolador.Archivo;
 import Contolador.GestorTienda;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Date;
 
 public class Orden {
     private String codigoVededor;
     private String NombreVendedor;
-    private String fechaVenta;
+    private DateTimeFormatter fechaVenta;
     private ArrayList<Pedido> pedidos;
 
-    public Orden(String codigoVededor, String nombreVendedor, String fechaVenta) {
+    public Orden(String codigoVededor, String nombreVendedor, DateTimeFormatter fechaVenta) {
         this.codigoVededor = codigoVededor;
         NombreVendedor = nombreVendedor;
         this.fechaVenta = fechaVenta;
@@ -29,6 +30,7 @@ public class Orden {
     throws ProductoException{
         Archivo archivo = new Archivo();
         ArrayList<String[]> datos = archivo.leerArchivo(pathArchivo);
+
         for (String[] dato: datos) {
             int cantidad = Integer.parseInt(dato[1]);
             Producto prod = gestorTienda.buscarProducto(dato[0]);
@@ -62,11 +64,12 @@ public class Orden {
     }
 
     public String getFechaVenta() {
-        return fechaVenta;
+        DateTimeFormatter fechaVenta = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm");
+        return fechaVenta.format(LocalDateTime.now());
     }
 
     public void setFechaVenta (String fechaVenta) {
-        this.fechaVenta = fechaVenta;
+        this.fechaVenta = DateTimeFormatter.ofPattern(fechaVenta);
     }
 
     public ArrayList<Pedido> getPedidos() {
